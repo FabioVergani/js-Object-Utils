@@ -1,16 +1,11 @@
 console.clear();
 
 
-//
-function valOr(a,b){return isUndefined(a)?b:a};
-
 
 //
 function isUndefined(e){return typeof(e)==='undefined'};
 
 
-//
-function valOr(a,b){return isUndefined(a)?b:a};
 
 /*ℹ PropertyAccessor:
 	#get
