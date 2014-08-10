@@ -7,56 +7,80 @@
 
 
 
-var _defineProperty=Object.defineProperty;
-
- 
+console.clear();
+//
 function isUndefined(e){return typeof(e)==='undefined'};
 //
 function valOr(a,b){return isUndefined(a)?b:a};
 //
-function definePropertyAccessor(o,p,g,s){var t=String(p),n=null;return _defineProperty(o,p,{get:g?function(){return g(t,o,p)}:n,set:s?function(v){p=s(t,o,p,v)}:n})};
-//
 
 
-
-/*
-function logAccess(s,w,f,o,t,p,v,x,y){
- console.log(s+'Property:%s in %O',t,o);
- console.info('HandleBefore:%s(Optionally),Handler:%O',w,f);
- console.debug('Values= Actual:%O, Passed:%O, ReturnedByHandler:%O, Used:%O',o[p],v,x,y);
+function definePropertyAccessor(o,p,g,s){
+ var t=String(p);
+ var o=Object.defineProperty(o,p,{
+	get:g?function(){return g(p,o,t)}:null,
+	set:s?function(v){p=s(v,p,o,t);return p}:null}
+ );
+ console.log("----")
+ p=void(o);
+ return o;
 };
-*/
 
-//function handleBeforeSet(x){return Number(x)};
-//var f=handleBeforeSet,z=o[p],x=f(z),y=valOr(x,p);logAccess('set','assignement',f,o,t,p,v,x,y);
-//
-//var f=handleBeforeGet,x=f(x),y=valOr(x,p);logAccess('get','returning',f,o,t,p,null,x,y);
-//TestInit:
+
+//console.dir(arguments);
+ 
+function logAccess(a,v,p,o,t,w,x){
+ console.log('%s Property:"%s", in:%O',a,t,o);
+ console.debug('value old:%O, passed:%O, %s:%O;',p,v,w,x);
+}; 
+ 
 function Metodo(){
  var e=this,z=null;
  e.history=[];
-//function log(t,o,p,v){console.log(t+'Property:"%s" in object:%O; value new:%O, old:%O;',p,o,v)};
- function log(a,t,o,p,v,x){console.log('action:%s t:"%s", o:%O, p:%O, v:%O, x:%O;',a,t,o,p,v,x)};
- 
- function Setter(t,o,p,v){
-	var x=v+1;e.history.push(x);//⇢handleBeforeSet!
-	log('set',t,o,p,v,x);
-	return x
- };
- function Getter(t,o,p){
-	var x=p+2;//⇢handleAfterGet!
-	log('get',t,o,p,null,x);
+	
+ function Setter(v,p,o,t,l){
+	var x;
+	//<handle‣BeforeSet! > 
+		x=v;
+		e.history.push(p);
+		logAccess('set',v,p,o,t,'assigned',x);
+	//</handle>
 	return x
  };
 
- definePropertyAccessor(e,'z',Getter,Setter).gethistory=function(){return e.history};
+ function Getter(p,o,t,l){
+	var x;
+	//<handle‣AfterGet> 
+		x=p;
+		logAccess('get',null,p,o,t,'returned',x);
+	//</handle>
+	return x
+ };
+ definePropertyAccessor(e,'z',Getter,Setter);
 };
 
+
+
+
 //TestRun:
-var o= new Metodo();
+var k,o= new Metodo();
 console.dir(o);
-console.log(o.z);//⇢get!
+
+console.log('#g1');
+k=o.z;//⇢get!1
+
+console.log('#s1');
 o.z=11;//⇢set!
+
+console.log('#g2');
+k=o.z;//⇢get!2
+
+console.log('#s2');
 o.z=13;//⇢set!
-console.log(o.gethistory());
+
+console.log('#g3');
+k=o.z;//⇢get!3
+
+
+console.log(o.history);
 console.dir(o);
