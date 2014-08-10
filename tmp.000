@@ -1,0 +1,296 @@
+<!Doctype html>
+<html>
+	<head><meta charset='utf-8' />
+	<title>test</title>
+	<script>console.clear();</script>
+	</head>
+	<body style='background:black;'>
+<script>
+//✔ 
+var Unicode={space:'\u0020'};
+
+//✔ 
+var _Slice=Array.prototype.slice;
+var _Call=Function.prototype.call;
+
+//✔ 
+function isNumber(e){return typeof(e)==='number'};
+function isUndefined(e){return typeof(e)==='undefined'};
+
+//✔ 
+function defineFunctionShortcut(o,p,x){o[p]=_Call.bind(x);return o};
+//✔
+/*ℹ Slice Zero-based
+							index:
+										i[=BeginOfExtraction]
+										 As a negative index, indicates an offset from the end of the sequence. 
+										 (0 by defaults)
+
+										j[=EndOfExtraction]
+										 slice extracts up-to-but-not-including-end.
+										 As a negative index, indicates an offset from the end of the sequence. 
+										 (If is omitted, slice extracts to the end of the sequence.)
+
+										 e.g.: If m=[0,1,2,3,4,5,6]
+																		⤷ slice(-1) extracts [6]
+																		⤷ slice(-2) extracts [5,6]
+
+																		⤷ slice(1,-2) extracts[1, 2, 3, 4]
+
+																		⤷ slice(3) extracts [3,4,5,6]
+
+																		⤷ slice(2,6) extracts [2,3,4,5] 
+																		⤷ slice(3,6) extracts [3,4,5]
+																		⤷ slice(3,5) extracts [3,4]
+																		⤷ slice(3,4) extracts [3]
+																		
+																		⤷ slice(0,-1) extracts [0,1,2, 3, 4, 5]] 
+																		⤷ slice(2,-1) extracts [2, 3, 4, 5]] 
+																		⤷ slice(4,-1) extracts [ 4, 5]] 
+*/
+var Slice=defineFunctionShortcut(function(x,i,j){return Slice.f(x,isNumber(i)?i:0,j)},'f',_Slice);//✔ 
+
+
+
+//✔ 
+/*ℹ ByLiveArguments
+								Flexible Functions
+*/
+function textSpaced(){return Slice(arguments).join(Unicode.space)};
+
+
+
+//✔ 
+/*ℹ PropertyDescriptor:
+
+	#value:
+						associated with the property.
+						(undefined by defaults)
+
+	#configurable:
+						true if and only if the type of this property descriptor may be changed
+						and if the property may be deleted from the  object.
+						(false by defaults)
+
+	#enumerable:
+						true if and only if this property shows up during enumeration of the properties.
+						(false by defaults)
+
+	#writable
+						true if and only if the value associated with the property may be changed with an assignment operator:
+						=, +=, -=, *=, /=, %=, <<=, >>=, >>>=, &=, ^=, |=
+						(false by defaults)
+*/
+function describePropertyData(v,w,e,c){var x=false;return{value:v,writable:w||x,enumerable:e||x,configurable:c||x}};
+/*ℹ PropertyAccessor:
+	#get
+			A function which serves as a getter for the property.
+			The output will be used as the value of property.
+			(undefined by defaults)
+	#set
+			A function which serves as a setter for the property.
+			The function will receive -as only argument- the new value being assigned to the property.
+			(undefined by defaults)
+
+
+//✔Access:logger 
+function logAccess(a,v,p,o,t,w,x){var c=console;c.log('%s Property:"%s", in:%O',a,t,o);c.debug('value old:%O, passed:%O, %s:%O;',p,v,w,x)};
+function logSet(v,p,o,t,x){logAccess('set',v,p,o,t,'assigned',x)}; 
+function logGet(p,o,t,x){logAccess('get',null,p,o,t,'returned',x)}; 
+
+//✔Access:pattern
+function Metodo(){};
+Metodo.z=333;
+Metodo.history=[];
+function Setter(v,p,o,t){
+ var x=v
+ /*<handle‣BeforeSet!>* /
+	o.history.push(p);
+ /*</handle>* /
+ logSet(v,p,o,t,x);
+ return x
+};
+function Getter(p,o,t){
+ var x;
+ /*<handle‣AfterGet> * /
+	x=p;
+ /*</handle>* /
+ logGet(p,o,t,x);
+ return x
+};
+definePropertyAccessor(Metodo,'z',Getter,Setter);
+//§TestRun:
+var k,o=Metodo;
+console.log("----")
+console.dir(o);
+console.log('#g1');
+k=o.z;//⇢get!1
+console.log('#s1');
+o.z=11;//⇢set!
+console.log('#g2');
+k=o.z;//⇢get!2
+console.log('#s2');
+o.z=13;//⇢set!
+console.log('#g3');
+k=o.z;//⇢get!3
+console.log(o.history);
+console.dir(o);
+
+*/
+function definePropertyAccessor(o,p,g,s){
+ var k=o[p],t=String(p),n=void(o),o=Object.defineProperty(o,p,{get:g?function(){return g(p,o,t)}:n,set:s?function(v){p=s(v,p,o,t);return p}:n});
+ p=(t in o)?k:n;
+ return o;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//§
+
+
+
+/*
+function (){}
+console.log(describeData('pippo'));
+
+v⇢value
+console.log(a);
+NS=(function(){
+	var a='b';
+	console.log(a);
+})();
+var a='a';
+
+
+
+//console.dir(arguments);
+//function textSpaced(){return '--\u0020--'};
+//<handle‣! > 
+//</handle>
+
+/*
+function log(){console.log.apply(null,arguments)};
+function logObj(){console.dir.apply(null,arguments)};
+function logDebug(){console.debug.apply(null,arguments)};
+
+
+
+console.log('Original Function object: %O',Function);
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Object.create(null,{value:v,writable:!!w,enumerable:!!e,configurable:!!c});
+//n⇢name,
+
+
+
+
+
+//function propertiesObject(){};
+
+
+
+
+
+
+
+
+
+/*
+//
+(function NS(F,O,N,S,A){
+
+	var createBy=O.create;
+	var Function=createBy(F,{p:{
+      value: 42,
+      writable: true,
+      enumerable: true,
+      configurable: true }});
+
+	//var self=NS;
+	//a='b';
+	//f1()
+	//function method2(){console.log(2,this);};
+	//console.log(NS);
+	
+	console.log('My Function object: %o',Function);
+	console.assert(myFunction!=Function);
+	
+})(Function,Object,Number,String,Array);
+//
+//
+//NS();
+//NS.method2();
+/*
+console.log(a);
+console.dir(NS);
+console.log(NS());
+console.log(a);
+*/
+
+
+
+
+
+</script>
+</body>
+</html>
+<!--
+/*
+function myFn(/* any number of arguments */) {
+	var args = Array.prototype.slice.call(arguments);
+		// or [].slice.call(arguments)
+
+	args.forEach(function(arg) {
+		// do something with args here
+	});
+}
+
+ This means that additional call() calls can be eliminated:
+
+// same as "slice" in the previous example
+var unboundSlice = Array.prototype.slice;
+var slice = Function.prototype.call.bind(unboundSlice);
+
+// ...
+
+slice(arguments);
+
+
+
+*/
+-->
