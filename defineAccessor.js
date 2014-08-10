@@ -12,7 +12,16 @@ function isUndefined(e){return typeof(e)==='undefined'};
 //
 function valOr(a,b){return isUndefined(a)?b:a};
 
-
+/*ℹ PropertyAccessor:
+	#get
+			A function which serves as a getter for the property.
+			The output will be used as the value of property.
+			(undefined by defaults)
+	#set
+			A function which serves as a setter for the property.
+			The function will receive -as only argument- the new value being assigned to the property.
+			(undefined by defaults)
+*/
 //
 function definePropertyAccessor(o,p,g,s){
  var k=o[p],t=String(p),n=void(o),o=Object.defineProperty(o,p,{get:g?function(){return g(p,o,t)}:n,set:s?function(v){p=s(v,p,o,t);return p}:n});
