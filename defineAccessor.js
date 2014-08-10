@@ -1,72 +1,57 @@
 console.clear();
-/*
-function log(){console.log.apply(null,arguments)};
-function logObj(){console.dir.apply(null,arguments)};
-function logDebug(){console.debug.apply(null,arguments)};
-*/
 
 
-function valOr(a,b){return isUndefined(a)?b:a};
 //
+function valOr(a,b){return isUndefined(a)?b:a};
 
 
+//
 function isUndefined(e){return typeof(e)==='undefined'};
-//
 
+
+//
 function valOr(a,b){return isUndefined(a)?b:a};
-//
 
+
+//
 function definePropertyAccessor(o,p,g,s){
  var k=o[p],t=String(p),n=void(o),o=Object.defineProperty(o,p,{get:g?function(){return g(p,o,t)}:n,set:s?function(v){p=s(v,p,o,t);return p}:n});
- p=t in o?k:n;
+ p=(t in o)?k:n;
  return o;
 };
+
+
+
 //
-
-
-
-
-
-
-
 function logAccess(a,v,p,o,t,w,x){
  console.log('%s Property:"%s", in:%O',a,t,o);
  console.debug('value old:%O, passed:%O, %s:%O;',p,v,w,x);
 };
-//
-
 function logSet(v,p,o,t,x){logAccess('set',v,p,o,t,'assigned',x)}; 
 function logGet(p,o,t,x){logAccess('get',null,p,o,t,'returned',x)}; 
+
 //
-
-
-
-
 function Metodo(){};
-//
-Metodo.z=333;
+//Metodo.z=333;
 Metodo.history=[];
-//
 function Setter(v,p,o,t){
  var x=v
- //<handle‣BeforeSet! > 
+ /*<handle‣BeforeSet!>*/
 	o.history.push(p);
- //</handle>
+ /*</handle>*/
  logSet(v,p,o,t,x);
  return x
 };
-//
 function Getter(p,o,t){
  var x;
- //<handle‣AfterGet> 
+ /*<handle‣AfterGet> */
 	x=p;
- //</handle>
+ /*</handle>*/
  logGet(p,o,t,x);
  return x
 };
-//
 definePropertyAccessor(Metodo,'z',Getter,Setter);
-
+//
 
 //TestRun:
 var k,o=Metodo;
@@ -91,3 +76,9 @@ console.dir(o);
 //
 //<handle‣! > 
 //</handle>
+
+/*
+function log(){console.log.apply(null,arguments)};
+function logObj(){console.dir.apply(null,arguments)};
+function logDebug(){console.debug.apply(null,arguments)};
+*/
